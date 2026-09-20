@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Test</title>
+
 <style>
-  * { box-sizing: border-box; }
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     font-family: Arial, sans-serif;
     background: #f2f4f8;
@@ -14,30 +18,53 @@
     display: flex;
     justify-content: center;
   }
+
   .container {
-    background: #fff;
+    background: white;
     max-width: 500px;
     width: 100%;
     padding: 24px;
     border-radius: 12px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   }
+
   h1 {
     text-align: center;
     font-size: 22px;
     margin-bottom: 20px;
     color: #222;
   }
+
+  .input-group {
+    margin-bottom: 15px;
+  }
+
+  .input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .input-group input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+
   .question {
     margin-bottom: 24px;
     padding-bottom: 16px;
     border-bottom: 1px solid #eee;
   }
+
   .question p {
     font-weight: bold;
     margin-bottom: 10px;
     font-size: 16px;
   }
+
   .options label {
     display: block;
     background: #f7f8fa;
@@ -46,87 +73,219 @@
     margin-bottom: 8px;
     cursor: pointer;
     border: 1px solid #ddd;
-    transition: 0.2s;
   }
+
   .options label:hover {
     background: #eef1f7;
   }
+
   .options input {
     margin-right: 8px;
   }
+
   button {
     width: 100%;
     padding: 12px;
     background: #4f46e5;
-    color: #fff;
+    color: white;
     border: none;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
     margin-top: 10px;
   }
+
   button:hover {
     background: #4338ca;
   }
-  #result {
-    margin-top: 20px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: bold;
+
+  #quiz {
     display: none;
+  }
+
+  #result {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  #result h2 {
+    margin-bottom: 15px;
+    color: #222;
+  }
+
+  #studentName {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  #score {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4f46e5;
+  }
+
+  #startSection {
+    display: block;
   }
 </style>
 </head>
+
 <body>
 
 <div class="container">
+
   <h1>Test</h1>
 
-  <form id="quizForm">
+  <!-- ISM FAMILIYA -->
+  <div id="startSection">
+
+    <div class="input-group">
+      <label for="firstName">Ism</label>
+      <input type="text" id="firstName" placeholder="Ismingizni kiriting">
+    </div>
+
+    <div class="input-group">
+      <label for="lastName">Familiya</label>
+      <input type="text" id="lastName" placeholder="Familiyangizni kiriting">
+    </div>
+
+    <button type="button" onclick="startTest()">Testni boshlash</button>
+
+  </div>
+
+
+  <!-- TEST -->
+  <form id="quiz">
 
     <div class="question">
       <p>1. Bu sayt ishlaydimi?</p>
+
       <div class="options">
-        <label><input type="radio" name="q1" value="ha"> Ha</label>
-        <label><input type="radio" name="q1" value="yoq"> Yo'q</label>
+        <label>
+          <input type="radio" name="q1" value="ha">
+          Ha
+        </label>
+
+        <label>
+          <input type="radio" name="q1" value="yoq">
+          Yo'q
+        </label>
       </div>
     </div>
+
 
     <div class="question">
       <p>2. Test osonmi?</p>
+
       <div class="options">
-        <label><input type="radio" name="q2" value="ha"> Ha</label>
-        <label><input type="radio" name="q2" value="yoq"> Yo'q</label>
+        <label>
+          <input type="radio" name="q2" value="ha">
+          Ha
+        </label>
+
+        <label>
+          <input type="radio" name="q2" value="yoq">
+          Yo'q
+        </label>
       </div>
     </div>
 
-    <button type="button" onclick="checkAnswers()">Tugatish</button>
+    <button type="button" onclick="checkAnswers()">Testni tugatish</button>
+
   </form>
 
-  <div id="result"></div>
+
+  <!-- NATIJA -->
+  <div id="result">
+
+    <h2>Test natijasi</h2>
+
+    <div id="studentName"></div>
+
+    <div id="score"></div>
+
+  </div>
+
 </div>
 
+
 <script>
+
   const correctAnswers = {
     q1: "ha",
     q2: "yoq"
   };
 
+
+  let firstName = "";
+  let lastName = "";
+  let testFinished = false;
+
+
+  function startTest() {
+
+    firstName = document.getElementById("firstName").value.trim();
+    lastName = document.getElementById("lastName").value.trim();
+
+    if (firstName === "" || lastName === "") {
+      alert("Iltimos, ism va familiyangizni kiriting.");
+      return;
+    }
+
+    document.getElementById("startSection").style.display = "none";
+    document.getElementById("quiz").style.display = "block";
+  }
+
+
   function checkAnswers() {
+
+    // Test allaqachon tugagan bo'lsa, hech narsa qilmaydi
+    if (testFinished) {
+      return;
+    }
+
     let score = 0;
     const total = Object.keys(correctAnswers).length;
 
     for (const question in correctAnswers) {
-      const selected = document.querySelector(`input[name="${question}"]:checked`);
-      if (selected && selected.value === correctAnswers[question]) {
+
+      const selected = document.querySelector(
+        `input[name="${question}"]:checked`
+      );
+
+      if (
+        selected &&
+        selected.value === correctAnswers[question]
+      ) {
         score++;
       }
     }
 
-    const resultDiv = document.getElementById("result");
-    resultDiv.style.display = "block";
-    resultDiv.textContent = `Natija: ${total} tadan ${score} ta to'g'ri javob berdingiz.`;
+
+    // Test tugaganini belgilaymiz
+    testFinished = true;
+
+
+    // Ism familiyani chiqarish
+    document.getElementById("studentName").textContent =
+      firstName + " " + lastName;
+
+
+    // Natijani chiqarish
+    document.getElementById("score").textContent =
+      score + " / " + total;
+
+
+    // TESTNI BUTUNLAY YASHIRISH
+    document.getElementById("quiz").style.display = "none";
+
+
+    // FAQAT NATIJANI KO'RSATISH
+    document.getElementById("result").style.display = "block";
+
   }
+
 </script>
 
 </body>
