@@ -1,195 +1,133 @@
-```html
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Test</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f7f6;
-            color: #222;
-            display: flex;
-            justify-content: center;
-            padding: 40px 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 700px;
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 0;
-            margin-bottom: 30px;
-        }
-
-        .question {
-            margin-bottom: 28px;
-            padding: 22px;
-            border: 1px solid #ddd;
-            border-radius: 12px;
-        }
-
-        .question h2 {
-            font-size: 19px;
-            margin-top: 0;
-            margin-bottom: 18px;
-        }
-
-        .option {
-            display: block;
-            padding: 13px 16px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .option:hover {
-            background: #f0f7f5;
-        }
-
-        .option input {
-            margin-right: 10px;
-        }
-
-        button {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 9px;
-            background: #00a88e;
-            color: white;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #008f79;
-        }
-
-        #result {
-            display: none;
-            margin-top: 25px;
-            padding: 22px;
-            border-radius: 12px;
-            background: #e6f7f5;
-            text-align: center;
-        }
-
-        #result h2 {
-            margin-top: 0;
-        }
-
-        .score {
-            font-size: 30px;
-            font-weight: bold;
-            color: #00a88e;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #f2f4f8;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .container {
+    background: #fff;
+    max-width: 500px;
+    width: 100%;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+  h1 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #222;
+  }
+  .question {
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #eee;
+  }
+  .question p {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  .options label {
+    display: block;
+    background: #f7f8fa;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    transition: 0.2s;
+  }
+  .options label:hover {
+    background: #eef1f7;
+  }
+  .options input {
+    margin-right: 8px;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #4f46e5;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover {
+    background: #4338ca;
+  }
+  #result {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    display: none;
+  }
+</style>
 </head>
-
 <body>
 
 <div class="container">
+  <h1>Test</h1>
 
-    <h1>Mini Test</h1>
+  <form id="quizForm">
 
-    <!-- 1-savol -->
     <div class="question">
-        <h2>1. Bu sayt ishlaydimi?</h2>
-
-        <label class="option">
-            <input type="radio" name="q1" value="ha">
-            Ha
-        </label>
-
-        <label class="option">
-            <input type="radio" name="q1" value="yoq">
-            Yo‘q
-        </label>
+      <p>1. Bu sayt ishlaydimi?</p>
+      <div class="options">
+        <label><input type="radio" name="q1" value="ha"> Ha</label>
+        <label><input type="radio" name="q1" value="yoq"> Yo'q</label>
+      </div>
     </div>
 
-    <!-- 2-savol -->
     <div class="question">
-        <h2>2. Test osonmi?</h2>
-
-        <label class="option">
-            <input type="radio" name="q2" value="ha">
-            Ha
-        </label>
-
-        <label class="option">
-            <input type="radio" name="q2" value="yoq">
-            Yo‘q
-        </label>
+      <p>2. Test osonmi?</p>
+      <div class="options">
+        <label><input type="radio" name="q2" value="ha"> Ha</label>
+        <label><input type="radio" name="q2" value="yoq"> Yo'q</label>
+      </div>
     </div>
 
-    <button onclick="finishTest()">Ishlab tugatish</button>
+    <button type="button" onclick="checkAnswers()">Tugatish</button>
+  </form>
 
-    <div id="result">
-        <h2>Natija</h2>
-
-        <div class="score" id="score"></div>
-
-        <p id="details"></p>
-    </div>
-
+  <div id="result"></div>
 </div>
 
 <script>
-    function finishTest() {
+  const correctAnswers = {
+    q1: "ha",
+    q2: "yoq"
+  };
 
-        const q1 = document.querySelector('input[name="q1"]:checked');
-        const q2 = document.querySelector('input[name="q2"]:checked');
+  function checkAnswers() {
+    let score = 0;
+    const total = Object.keys(correctAnswers).length;
 
-        // Barcha savollarga javob berilganini tekshirish
-        if (!q1 || !q2) {
-            alert("Iltimos, barcha savollarga javob bering.");
-            return;
-        }
-
-        let correct = 0;
-
-        // To'g'ri javoblar
-        if (q1.value === "ha") {
-            correct++;
-        }
-
-        if (q2.value === "yoq") {
-            correct++;
-        }
-
-        const total = 2;
-        const wrong = total - correct;
-
-        // Natijani chiqarish
-        document.getElementById("result").style.display = "block";
-
-        document.getElementById("score").textContent =
-            correct + " / " + total + " ta to‘g‘ri";
-
-        document.getElementById("details").textContent =
-            "To‘g‘ri: " + correct +
-            " | Noto‘g‘ri: " + wrong;
+    for (const question in correctAnswers) {
+      const selected = document.querySelector(`input[name="${question}"]:checked`);
+      if (selected && selected.value === correctAnswers[question]) {
+        score++;
+      }
     }
+
+    const resultDiv = document.getElementById("result");
+    resultDiv.style.display = "block";
+    resultDiv.textContent = `Natija: ${total} tadan ${score} ta to'g'ri javob berdingiz.`;
+  }
 </script>
 
 </body>
 </html>
-```
